@@ -8,4 +8,6 @@ dependencies = [
     "boto3>=1.43.29",
     "celery[redis]>=5.6.3",
     "fastapi[standard]>=0.136.3",
+    "pydantic-settings>=2.14.1",
+    "python-dotenv>=1.2.2",
 ]
