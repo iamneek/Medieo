@@ -1,7 +1,6 @@
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, UploadFile, File, Form, status
 import uuid
 from fastapi.responses import JSONResponse
-from fastapi import status
 import os
 import tempfile
 
@@ -10,8 +9,8 @@ router = APIRouter()
 
 @router.post("/upload/init")
 async def upload_init():
-    up_id = uuid.uuid4()
-    return {"upload_id": up_id}
+    up_id = str(uuid.uuid4())
+    return JSONResponse({"upload_id": up_id}, status_code=status.HTTP_201_CREATED)
 
 
 @router.post("/upload/")
@@ -49,3 +48,4 @@ async def upload_video(
                 chunk += 1
         return JSONResponse({"message": "File uploaded successfully"}, status_code = status.HTTP_201_CREATED)
     return JSONResponse({"message": "Chunk uploaded successfully"}, status_code = status.HTTP_201_CREATED)
+
