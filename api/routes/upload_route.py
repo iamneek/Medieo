@@ -3,6 +3,7 @@ import uuid
 from fastapi.responses import JSONResponse
 import os
 import tempfile
+from tasks.transcoding import transcode_t_hls
 
 router = APIRouter()
 
@@ -23,7 +24,7 @@ async def upload_video(
     base = tempfile.gettempdir()
     dir_path = os.path.join(base, "medieo", up_id)
     file_path = f"{dir_path}/chunk_{chunk_num}"
-    assembled_path = os.path.join(dir_path, "assembled")
+    assembled_path = os.path.join(dir_path, "assembled.mp4")
     try:
         os.makedirs(dir_path, exist_ok=True)
     except Exception as e:
@@ -46,6 +47,8 @@ async def upload_video(
                         bf.write(data)
                 os.remove(chunk_fp)
                 chunk += 1
-        return JSONResponse({"message": "File uploaded successfully"}, status_code = status.HTTP_201_CREATED)
+        task = transcode_t_hls.delay(assembled_path, up_id)
+        return JSONResponse({"message": "File uploaded successfully", "task_id": task.id}, status_code = status.HTTP_201_CREATED) # type: ignore
+        
     return JSONResponse({"message": "Chunk uploaded successfully"}, status_code = status.HTTP_201_CREATED)
 
