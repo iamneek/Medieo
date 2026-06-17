@@ -53,6 +53,7 @@ export default function Upload() {
             const taskID = file_resp?.data.task_id
             setTaskId(taskID)
             setUploaded(true)
+            SetProgress(0)
             console.log("offset: ", offset)
             console.log("file size: ", file?.size)
             console.log("Task ID: ", taskID)
@@ -71,7 +72,8 @@ export default function Upload() {
                 <Input type="text" placeholder="Video Title" className="" name="video_title" />
                 <Input type="text" placeholder="Video Description" className="border-1 p-2" />
                 <Input type="file" id="upload_input" accept=".mp4, .mkv, .mov" onChange={(e) => handleImage(e)} ref={fileInputRef} />
-                <Button className="mt-4" onClick={(e) => handleUpload(e)}>Upload <HugeiconsIcon icon={Upload01FreeIcons} size={32} color="#ffffff" strokeWidth={2} /></Button>
+                <Button className="mt-4" onClick={(e) => handleUpload(e)} disabled={progress > 0}>Upload <HugeiconsIcon icon={Upload01FreeIcons} size={32} color="#ffffff" strokeWidth={2} /></Button>
+                <UploadProgress progress={progress} isUploaded={isUploaded} />
             </form>
         </div>
     )
