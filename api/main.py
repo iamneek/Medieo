@@ -12,10 +12,10 @@ origins = [
 
 app.include_router(upload_route.router)
 app.include_router(watch_route.router)
-app.add_middleware(CORSMiddleware,
-                   allow_origins=origins,
-                   allow_methods=["*"],
-                   allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware, allow_origins=origins, allow_methods=["*"], allow_headers=["*"]
+)
+
 
 @app.get("/")
 def home():

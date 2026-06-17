@@ -32,8 +32,8 @@ async def upload_video(
         return status.HTTP_503_SERVICE_UNAVAILABLE
 
     is_last = chunk_num + 1 == total_chunks
-    
-    with open(file_path, 'wb') as bf:
+
+    with open(file_path, "wb") as bf:
         while content := await chunks.read(1024 * 1024):
             bf.write(content)
 
@@ -43,12 +43,16 @@ async def upload_video(
             while chunk < total_chunks:
                 chunk_fp = f"{dir_path}/chunk_{chunk}"
                 with open(chunk_fp, "rb") as bff:
-                    while data:= bff.read(1024*1024):
+                    while data := bff.read(1024 * 1024):
                         bf.write(data)
                 os.remove(chunk_fp)
                 chunk += 1
         task = transcode_t_hls.delay(assembled_path, up_id)
-        return JSONResponse({"message": "File uploaded successfully", "task_id": task.id}, status_code = status.HTTP_201_CREATED) # type: ignore
-        
-    return JSONResponse({"message": "Chunk uploaded successfully"}, status_code = status.HTTP_201_CREATED)
+        return JSONResponse(
+            {"message": "File uploaded successfully", "task_id": task.id},
+            status_code=status.HTTP_201_CREATED,
+        )  # type: ignore
 
+    return JSONResponse(
+        {"message": "Chunk uploaded successfully"}, status_code=status.HTTP_201_CREATED
+    )
