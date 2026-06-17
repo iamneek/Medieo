@@ -36,7 +36,6 @@ export default function Watch({ params }: { params: Promise<{ upload_id: string 
     const getPresignedUrl = async () => {
         const resp = await axios.get(`http://127.0.0.1:8000/watch/${upload_id}`)
         const stream_url = resp.data.stream_url
-        console.log(stream_url)
         setSource(stream_url)
     }
     return (
