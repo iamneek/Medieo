@@ -24,6 +24,14 @@ export default function Watch({ params }: { params: Promise<{ upload_id: string 
             hls.on(Hls.Events.MANIFEST_PARSED, () => {
                 console.log("Ready to play")
             });
+
+            hls.on(Hls.Events.MANIFEST_PARSED, async () => {
+                try {
+                    await vid.play();
+                } catch (err) {
+                    console.log("Autoplay blocked:", err);
+                }
+            });
         }
 
         return () => {
