@@ -167,6 +167,8 @@ Visit: `http://localhost:3000`
 
 ---
 
+NOTE: Localstack used in this manner is not persistent after restart. Therefore, you might need to delete database entries after a restart, or use a real S3 bucket for production.
+
 ### How to Use
 
 1. Go to **Upload** page
