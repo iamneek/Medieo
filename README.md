@@ -1,3 +1,9 @@
+
+<div align="center">
+  <img src="https://socialify.git.ci/iamneek/medieo/image?language=1&name=1&pattern=Circuit+Board&theme=Light" alt="medieo"/>
+</div>
+
+--- 
 **Medieo - Minimal YouTube-like Video Backend (HLS Focus)**
 
 A learning project demonstrating a complete video upload → transcoding → adaptive streaming pipeline using **HLS (HTTP Live Streaming)**.
