@@ -1,9 +1,14 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ..config import settings
 from sqlalchemy.ext.declarative import declarative_base
+from dotenv import load_dotenv
+import os
 
-engine = create_engine(settings.db_url)
+load_dotenv()
+
+DB_URL = os.getenv("NEON_CONNECTION_STRING")
+
+engine = create_engine(DB_URL)
 session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

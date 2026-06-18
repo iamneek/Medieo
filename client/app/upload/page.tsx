@@ -14,8 +14,13 @@ export default function Upload() {
     const [progress, SetProgress] = useState<number>(0);
     const [isUploaded, setUploaded] = useState<boolean>(false);
     const [taskId, setTaskId] = useState<string | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | Blob | MediaSource | MediaStream | undefined>();
+
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const titleInputRef = useRef<HTMLInputElement>(null)
+    const descInputRef = useRef<HTMLInputElement>(null)
+
+
     useEffect(() => {
         if (fileInputRef.current) fileInputRef.current.value = ""
     }, [])
@@ -30,6 +35,8 @@ export default function Upload() {
 
     const handleUpload = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
+        const title_value = titleInputRef.current?.value
+        const desc_value = descInputRef.current?.value
         const response = await axios.post('http://127.0.0.1:8000/upload/init')
         const upload_id = response.data.upload_id
         const chunk_size = 1024 * 1024
@@ -42,6 +49,15 @@ export default function Upload() {
                 const chunk_blob = new Blob([chunk], { type: file.type })
                 const formData = new FormData()
                 formData.append("up_id", upload_id)
+                if (title_value) {
+                    formData.append("video_title", title_value)
+                } else {
+                    console.log("No video title")
+                    return;
+                }
+                if (desc_value) {
+                    formData.append("video_description", desc_value)
+                }
                 formData.append("chunk_num", String(current_chunk))
                 formData.append("chunks", chunk_blob)
                 formData.append("total_chunks", String(Math.ceil(file?.size / chunk_size)))
@@ -66,11 +82,10 @@ export default function Upload() {
                 <video
                     id="preview-img"
                     src={previewUrl}
-                    alt="Video Thumbnail"
                     className={cn("object-contain max-h-full max-w-full", !file && "hidden")}
                 />
-                <Input type="text" placeholder="Video Title" className="" name="video_title" />
-                <Input type="text" placeholder="Video Description" className="border-1 p-2" />
+                <Input type="text" placeholder="Video Title" name="video_title" ref={titleInputRef} />
+                <Input type="text" placeholder="Video Description" className="py-7" ref={descInputRef} />
                 <Input type="file" id="upload_input" accept=".mp4, .mkv, .mov" onChange={(e) => handleImage(e)} ref={fileInputRef} />
                 <Button className="mt-4" onClick={(e) => handleUpload(e)} disabled={progress > 0}>Upload <HugeiconsIcon icon={Upload01FreeIcons} size={32} color="#ffffff" strokeWidth={2} /></Button>
                 <UploadProgress progress={progress} isUploaded={isUploaded} />
