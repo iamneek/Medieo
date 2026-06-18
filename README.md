@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="https://socialify.git.ci/iamneek/medieo/image?language=1&name=1&pattern=Circuit+Board&theme=Light" alt="medieo"/>
+<img src="https://socialify.git.ci/iamneek/medieo/image?custom_language=FastAPI&language=1&name=1&pattern=Circuit+Board&theme=Light" alt="medieo" />
 </div>
 
 --- 
